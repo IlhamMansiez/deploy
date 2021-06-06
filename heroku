@@ -1,7 +1,3 @@
-#Petercord
-
-
-
 set -e
 # default unzip folder.
 DIR='app/main'
@@ -10,11 +6,11 @@ mkdir -p "$DIR"
 _get_ziplink () {
     local regex
     regex='(https?)://github.com/.+/.+'
-    if [[ $PETERCORD_REPO =~ $regex ]]
+    if [[ $UPSTREAM_REPO =~ $regex ]]
     then 
-        echo "${PETERCORD_REPO}/archive/petercord.zip"
+        echo "${UPSTREAM_REPO}/archive/alpha.zip"
     else
-        echo "aHR0cHM6Ly9naXRodWIuY29tL0lsaGFtTWFuc2llei9QZXRlcmNvcmQvYXJjaGl2ZS9wZXRlcmNvcmQuemlw" | base64 -d
+        echo "aHR0cHM6Ly9naXRodWIuY29tL2NvZGUtcmdiL1VTRVJHRS1YL2FyY2hpdmUvYWxwaGEuemlw" | base64 -d
     fi
 }
 
