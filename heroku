@@ -1,4 +1,7 @@
 #Petercord
+
+
+
 set -e
 # default unzip folder.
 DIR='app/main'
