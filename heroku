@@ -1,11 +1,18 @@
-#Petercord
+#!/bin/bash
+# Copyright (C) 2021 MyGpack
 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 
-
-
-
-
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
@@ -18,11 +25,11 @@ mkdir -p "$DIR"
 _get_ziplink () {
     local regex
     regex='(https?)://github.com/.+/.+'
-    if [[ $PETERCORD_REPO =~ $regex ]]
+    if [[ $UPSTREAM_REPO =~ $regex ]]
     then 
-        echo "${PETERCORD_REPO}/archive/petercord.zip"
+        echo "${UPSTREAM_REPO}/archive/alpha.zip"
     else
-        echo "aHR0cHM6Ly9naXRodWIuY29tL0lsaGFtTWFuc2llei9QZXRlcmNvcmQvYXJjaGl2ZS9wZXRlcmNvcmQuemlw" | base64 -d
+        echo "aHR0cHM6Ly9naXRodWIuY29tL2NvZGUtcmdiL1VTRVJHRS1YL2FyY2hpdmUvYWxwaGEuemlw" | base64 -d
     fi
 }
 
