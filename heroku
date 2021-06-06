@@ -1,95 +1,41 @@
-#!/bin/bash
-
-
-# error precaution.
+#Petercord
 set -e
+# default unzip folder.
+DIR='app/main'
+mkdir -p "$DIR"
 
-WORK_DIR="userbot"
-mkdir -p $WORK_DIR
-
-disp () {
-    echo "-----> $*"
-}
-
-indent () {
-    sed -u 's/^/       /'
-}
-
-_done () {
-    echo -e "Done\n" | indent
-}
-
-_displaylogo () {
-    echo '
-===========================================
-
-    :::::::::: ::::::::::  ::::::::::: ::::::::::    ::::::::::  
-    :::    ::: ::               ::     ::            ::    ::::
-    :::::::::: :::::::::        ::     :::::::::     ::  ``
-    :::        :::::::::        ::     :::::::::     ::   ``
-    :::        ::               ::     ::            ::    ``
-    :::        ::::::::::       ::     :::::::::::   ::      ``    
-               
-===========================================
-|            VERSION  v0.1.0                 |
-|    By: @diemmmmmmmmmm and Ilham Mansiez    |
-|           (C) 2021 - PetercordPlugin       |
-===========================================
-'
-}
-
-get_branch () {
-    local branch
-    if [[ $PREF_BRANCH ]]
-    then
-        branch=$(echo $PREF_BRANCH | xargs)
-    else
-        branch=petercord
-    fi
-    echo "/archive/refs/heads/$branch.zip"
-}
-
-get_ziplink () {
+_get_ziplink () {
     local regex
     regex='(https?)://github.com/.+/.+'
-    if [[ $UPSTREAM_REPO =~ $regex ]]
+    if [[ $PETERCORD_REPO =~ $regex ]]
     then 
-        echo "${UPSTREAM_REPO}$(get_branch)"
+        echo "${PETERCORD_REPO}/archive/petercord.zip"
     else
-        echo "$(echo "aHR0cHM6Ly9naXRodWIuY29tL0lsaGFtTWFuc2llei9QZXRlcmNvcmQ" | base64 -d)$(get_branch)"
+        echo "aHR0cHM6Ly9naXRodWIuY29tL0lsaGFtTWFuc2llei9QZXRlcmNvcmQvYXJjaGl2ZS9wZXRlcmNvcmQuemlw" | base64 -d
     fi
-}
-
-_setup_repo () {
-    local zippath
-    zippath="$WORK_DIR/temp.zip"
-    disp "Fetching Update from Upstream Repo"
-    wget -qq $(get_ziplink) -O "$zippath"
-    _done
-    disp "Unpacking Data"
-    unzip -qq "$zippath" -d "$WORK_DIR"
-    _done
-    disp "Cleaning"
-    rm -rf "$zippath"
-    _done
 }
 
 _startbot () {
-    local bot_dir
-    bot_dir=$(cd $WORK_DIR && ls) && mv "$WORK_DIR/$bot_dir" "Petercord"
-    rm -rf $WORK_DIR
-    cd "Petercord"
-    git init > /dev/null 2>&1
-    echo -e ">><< --- >><<  Starting [X]  >><< --- >><<\n" | indent
+    cd $DIR/*
+    echo -e "\n\n   >><< --- >><< ---=>  Starting [X]  <=--- >><< --- >><<\n\n"
+    sleep 5
     bash run
 }
 
-begin_x () {
-    _displaylogo
-    sleep 5
-    _setup_repo
+setup_repo () {
+    local zippath
+    zippath="app/temp.zip"
+    echo -e "--->  Fetching Update from Upstream Repo ...\n"
+    wget -q $(_get_ziplink) -O "$zippath"
+    echo -e "      Done\n"
+    echo "--->  Unpacking Data ..."
+    unzip -qq "$zippath" -d "$DIR"
+    echo -e "      Done\n"
+    echo "--->  Cleaning ..."
+    rm -rf "$zippath"
+    echo "      Done"
+    sleep 2
     _startbot
 }
 
-begin_x
-
+setup_repo
